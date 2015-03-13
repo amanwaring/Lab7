@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<body>
+<form id="commentForm" action="">
+  Name: <input type="text" id="Name"><br>
+  Comment: <input type="text" id="Comment"><br>
+</form>
+<button id="button">Submit Comment</button><br>
+<button id="getButton">See All Comments</button><br>
+<span> <ul id="json"></ul></span>
+</body>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+$(document).ready( function() {
+  $("#button").click(function() {
+    var myobj = {Name:$("#Name").val(),Comment:$("#Comment").val()};
+    var jobj = JSON.stringify(myobj);
+    var url = "http://andrewlaurel.com/addComments";
+    $.post(url, jobj, function(data, textStatus) {
+      $("#done").append(textStatus);
+    });
+  });
+  $("#getButton").click(function() {
+    var url = "http://andrewlaurel.com/getComments";
+    $.getJSON(url, function(data) {
+      var everything;
+      everything = "";
+      $.each(data, function(i, item) {
+	everything += '<li> Name: ' + data[i].Name + ' -  Comment: ' + data[i].Comment + '</li>';
+      });
+      $("#json").html(everything);
+    });
+  });
+});
+</script>
+</html>
